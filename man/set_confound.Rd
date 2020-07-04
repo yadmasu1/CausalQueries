@@ -98,9 +98,7 @@ model <- make_model('A -> B -> C -> D; B -> D') \%>\%
 
 # Example where two parents are confounded
 model <- make_model('A -> B <- C') \%>\%
-  set_confound(list(A = 'C==1')) \%>\%
-  set_parameters(c(0,1,1,0, .5, .5, rep(.0625, 16)))
-cor(simulate_data(model, n = 20))
+  set_confound(list(A = 'C==1'))
 
 model <- make_model('X -> Y')
 confound <- list(X = '(Y[X=1] > Y[X=0])', X = '(Y[X=1] == 1)')
