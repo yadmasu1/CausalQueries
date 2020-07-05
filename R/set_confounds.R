@@ -86,7 +86,9 @@
 #'
 #' # Example where two parents are confounded
 #' model <- make_model('A -> B <- C') %>%
-#'   set_confound(list(A = 'C==1'))
+#' set_confound(model, list(A = 'C==1')) %>%
+#' set_parameters(model ,c(0,1,1,0, .5, .5, rep(.0625, 16)))
+#' cor(simulate_data(model, n = 20))
 #'
 #' model <- make_model('X -> Y')
 #' confound <- list(X = '(Y[X=1] > Y[X=0])', X = '(Y[X=1] == 1)')
@@ -225,19 +227,13 @@ set_confound <- function(model, confound = NULL, add_confounds_df = TRUE) {
     prob_of_s <- get_type_prob(model, model$P, parameters = parameters)
 
 
-     if(sum(prob_of_s) != "1"){ # Didn't work with numeric comparison-- even when comparing against 1L
+     if(round(sum(prob_of_s),6) != "1"){ #Very hacky and ugly: Didn't work with numeric comparison-- even when comparing against 1L
          warning("Cannot characterize confounding; no action taken")
          return(model_0)
      }
 
     return(model)
-    # if(sum(prob_of_s)  != 1L){
-    #     warning("Cannot characterize confounding; no action taken")
-    #     return(model_0)
-    #
-    # } else{
-    #     return(model)
-    # }
+
 
 
 }
